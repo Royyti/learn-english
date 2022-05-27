@@ -6,7 +6,8 @@ const os = require(`os`);
 const statsRouter = express.Router();
 
 statsRouter.get(`/`, function (req, res) {
-    const statsUser = JSON.parse(fs.readFileSync(`./data/user1.json`, 'utf-8'));
+    const { user } = req.body;
+    const statsUser = JSON.parse(fs.readFileSync(`./data/${user}.json`, 'utf-8'));
 
 
     res.send(statsUser);

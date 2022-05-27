@@ -21,19 +21,27 @@ wordRouter.get(`/`, function (req, res) {
 })
 wordRouter.post(`/`, function (req, res) {
 
+    const { user, englishword, hebrewword } = req.body;
     const translateWord =
     {
-        "englishword": req.body[`englishword`],
-        "hebrewword": req.body[`hebrewword`]
+        "englishword": englishword,
+        "hebrewword": hebrewword
     }
     const userTrans = {
-        "sourceWord": req.body[`englishword`],
+        "sourceWord": englishword,
         "correctCounter": 0,
         "wrongCounter": 0
     }
     console.log(userTrans)
-    //const userFile = require(`user1.json`);
-    const userFile = JSON.parse(fs.readFileSync(`./data/user1.json`, 'utf-8'));
+
+    let userFile = [];
+    const userFilePath = `./data/${user}.json`;
+    try {
+        const file = fs.readFileSync(userFilePath, 'utf-8');
+        userFile = JSON.parse(file);
+    } catch (ex) {
+        fs.writeFileSync(userFilePath, '[]');
+    }
 
     const uIdx = userFile.findIndex(e => e.sourceWord === translateWord.englishword);
 
@@ -44,7 +52,7 @@ wordRouter.post(`/`, function (req, res) {
         if (uIdx > -1) {
             userFile[uIdx].correctCounter++;
             console.log(uIdx)
-            fs.writeFileSync('./data/user1.json', JSON.stringify(userFile));
+            fs.writeFileSync(userFilePath, JSON.stringify(userFile));
             res.send("succes");
 
         }
@@ -52,7 +60,7 @@ wordRouter.post(`/`, function (req, res) {
             userTrans.correctCounter++;
             userFile.push(userTrans)
             console.log(userFile)
-            fs.writeFileSync('./data/user1.json', JSON.stringify(userFile));
+            fs.writeFileSync(userFilePath, JSON.stringify(userFile));
             res.send(true);
         }
 
@@ -60,14 +68,14 @@ wordRouter.post(`/`, function (req, res) {
     else {
         if (uIdx > -1) {
             userFile[uIdx].wrongCounter++
-            fs.writeFileSync('./data/user1.json', JSON.stringify(userFile));
+            fs.writeFileSync(userFilePath, JSON.stringify(userFile));
             res.send(`not succes`)
 
         }
         else {
             userTrans.wrongCounter++;
             userFile.push(userTrans)
-            fs.writeFileSync('./data/user1.json', JSON.stringify(userFile));
+            fs.writeFileSync(userFilePath, JSON.stringify(userFile));
             res.send(false);
         }
 
