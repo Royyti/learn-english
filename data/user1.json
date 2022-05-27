@@ -1,0 +1,22 @@
+[
+    {
+        "sourceWord": "glass",
+        "correctCounter": 3,
+        "wrongCounter": 0
+    },
+    {
+        "sourceWord": "pack",
+        "correctCounter": 3,
+        "wrongCounter": 2
+    },
+    {
+        "sourceWord": "kiss",
+        "correctCounter": 1,
+        "wrongCounter": 4
+    },
+    {
+        "sourceWord": "teach",
+        "correctCounter": 1,
+        "wrongCounter": 2
+    }
+]
